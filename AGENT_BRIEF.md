@@ -30,6 +30,8 @@ Web (the site in the phone's browser)
 
 ## Rules
 - Take a screenshot after EVERY action and look at it before the next one. Number them in order.
+- When a dialog or snackbar appears, screenshot it BEFORE you dismiss it: a message you
+  closed unseen is not a "nothing happened".
 - Never clear app data or reinstall. Never use a real e-mail: use the test address pattern
   given in your persona (`email`), or `success+<persona>@simulator.amazonses.com`.
 - A blocked step is a finding, not the end of the test. Write it down, then try what a
@@ -46,6 +48,34 @@ An offline point-of-sale app for a small shop (no account, no server: data stays
 phone). Tabs: Register (cash register / POS), Invoices (Sales Invoices), Stock, Dashboard
 (sales reports), Setup (every settings page). The UI is English only, whatever the
 persona's locale: report places where that blocks the persona, not the missing language itself.
+
+## Known behaviour: do not report
+Checked by the developer after the last test run. Report only if it is worse than described.
+- The selling price is "Standard Selling Rate" on the New Item **Details** tab (scroll down).
+  Max Discount (%) on the Sales tab is a percentage, not a price.
+- An unsaved cart is not restored after Android kills the app (by design). Saved drafts are.
+- Tapping an out-of-stock item shows an "Item is unavailable" dialog (titled "Cannot save": known).
+- ERPNext labels (Material Receipt, UOM, Valuation Rate, Naming Series) are by design.
+- Tab rows and filter chip rows scroll sideways: swipe them before reporting text as cut off.
+- Required fields are marked *; Next / Save stay disabled until they are filled.
+- The "Unsaved changes" prompt counts typed fields and table rows, not a switch or dropdown alone.
+- `accessibility check` lines about text fields with no name, when the field shows a visible
+  label: Flutter exposes the label as hint text, which the dump does not show. Ignore them.
+- The 40 dp back button of the item search is a Flutter default. Ignore it.
+- After a refused negative Opening Amount the field shows 0.00; it must be retyped (known).
+
+## Regression checks (fixed since the last run: confirm each one, with a screenshot)
+- Checkout: Complete Order is visible without scrolling, above the tab bar (phone and tablet).
+- New Item, or any form: type something, press Back: an "Unsaved changes" prompt appears;
+  Cancel keeps the form, Discard Changes leaves; after a save, Back leaves without asking.
+- Bad numbers are refused with a message under the field and Save does NOT say "Saved":
+  letters ("abc-5"), 1e12 or more, Max Discount over 100 or below 0, Opening Stock below
+  zero, Opening Stock with a Valuation Rate of 0. Reopen the item to check nothing was stored.
+- POS opening: an Opening Amount of -50 is refused and no session opens.
+- Welcome wizard, last step: "Add your first item" opens the New Item form directly.
+- The currency symbol and number format match the country picked in the wizard
+  (e.g. Egypt E£, Russia ₽, Brazil R$ 1.234,56, Spain 1.234,56 €).
+- Dashboard: with a real Valuation Rate, Gross Profit is below 100% and Stock Value is not 0.
 
 ## What to check
 1. First launch: the Welcome wizard until the main screen.
@@ -69,6 +99,7 @@ Write both files with the Write tool (writing through the shell is blocked).
    - Issues, most severe first. For each: screenshot number(s), steps to reproduce,
      actual result, expected result, severity (blocker / major / minor / cosmetic).
    - Device-specific layout problems (same format, shorter).
+   - Regression checks you reached: one line each, "holds" or "BROKEN", with the screenshot.
    - The persona's opinion in their own words: would they keep the app? score /10.
 2. `results/<persona>/findings.json`:
    `{"score": 7, "issues": [{"title": "...", "severity": "major", "screen": "Sign-up", "screens": ["05", "06"]}]}`
