@@ -41,13 +41,24 @@ Web (the site in the phone's browser)
   crashes twice, or after 4 different attempts on the same blocked step.
 - Write everything under `results/<persona>/`. Nothing else.
 
-## What to check (adapt to your app)
-1. First launch and onboarding until the main screen.
+## The app: Rx Merchant
+An offline point-of-sale app for a small shop (no account, no server: data stays on the
+phone). Tabs: Register (cash register / POS), Invoices (Sales Invoices), Stock, Dashboard
+(sales reports), Setup (every settings page). The UI is English only, whatever the
+persona's locale: report places where that blocks the persona, not the missing language itself.
+
+## What to check
+1. First launch: the Welcome wizard until the main screen.
 2. The persona's goal (personas.json, `goal`).
-3. Layout on THIS device: cut text, buttons hidden by the keyboard, notch or home bar,
-   large text sizes, dark mode contrast.
-4. Error and empty states: no network answer, empty lists, wrong input.
-5. Accessibility: when `screen.py` ends with an `accessibility check` line (controls with no
+3. Money is right: line totals, taxes, discounts and grand total in the Register and on
+   invoices; stock quantity drops after a sale; the Dashboard matches the sales you made.
+4. Layout on THIS device: cut text, buttons hidden by the keyboard, notch or home bar,
+   large text sizes, dark mode contrast, wide tables on small phones.
+5. Error and empty states: empty lists, mandatory fields, letters in number fields,
+   negative or huge quantities and prices.
+Out of scope: real barcode scans (camera) and Bluetooth thermal printing. Opening the
+scanner or printer screen and denying the permission is in scope: the app must not crash.
+6. Accessibility: when `screen.py` ends with an `accessibility check` line (controls with no
    name, touch targets under 48 dp / 44 pt), look at those controls on the screenshot. Report
    each kind once, with the screens where you saw it: minor, unless it stops a task.
 

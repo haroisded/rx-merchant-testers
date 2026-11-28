@@ -10,10 +10,10 @@ on:
     inputs:
       android_personas:
         description: Android personas from personas.json (comma-separated, all = every Android persona, none = skip Android)
-        default: "anna,malik"
+        default: "all"
       ios_personas:
         description: iOS personas from personas.json (comma-separated, all = every iOS persona, none = skip iOS)
-        default: "clara,jonas"
+        default: "none"
       web_personas:
         description: Web personas from personas.json, a phone's browser on web_url (comma-separated, all = every web persona, none = skip the web)
         default: "none"
@@ -22,10 +22,10 @@ on:
         default: ""
       app_dir:
         description: App folder (where package.json is)
-        default: demo-app
+        default: "."
       app_id:
         description: Android package / iOS bundle id (if a platform uses another id, the one inside its built app is used)
-        default: com.example.tinytodo
+        default: com.rx_merchant.rx_merchant
       framework:
         description: auto, flutter, expo, react-native, capacitor, nativescript, kmp, native or maui
         default: auto
@@ -46,7 +46,7 @@ on:
         default: ""
       source_repo:
         description: owner/name of the app repo (empty = this repo)
-        default: ""
+        default: haroisded/Rx-Merchant
       ref:
         description: Branch, tag or full SHA of the app repo (empty = default branch)
         default: ""
